@@ -161,6 +161,5 @@ cython_debug/
 .DS_Store
 lightning_logs/
 checkpoint/
-*.png
-recaptcha_dataset
+google-recaptcha-image/
 .ruff_cache

@@ -1,7 +1,8 @@
 import os
 import shutil
+import sys
 
-# sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from config import CFG
 
 
@@ -49,8 +50,13 @@ def move_img(dict_label):
                 )
 
 
-if __name__ == "__main__":
+def make_dataset():
+    # dtools.download(dataset='Google Recaptcha Image', dst_dir=CFG['dataset_path'])
     ls_img = os.listdir(f'{CFG["data_dir"]}/img')
     dict_label = split_by_label(ls_img)
     mkdir()
     move_img(dict_label)
+
+
+if __name__ == "__main__":
+    make_dataset()

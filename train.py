@@ -11,9 +11,15 @@ if __name__ == "__main__":
     model = ReCaptchaModel(CFG)
     tb_logger = pl_loggers.TensorBoardLogger(save_dir="lightning_logs/")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    kw_trainer = {"gpus": 1} if device.type == "cuda" else {"accelerator": "cpu"}
-    print("Using", kw_trainer)
-    trainer = pl.Trainer(
-        max_epochs=10, log_every_n_steps=5, logger=tb_logger, **kw_trainer
-    )
+    if device.type == "cuda":
+        trainer = pl.Trainer(
+            max_epochs=CFG["epochs"], log_every_n_steps=5, logger=tb_logger, gpus=1
+        )
+    else:
+        trainer = pl.Trainer(
+            max_epochs=CFG["epochs"],
+            log_every_n_steps=5,
+            logger=tb_logger,
+            accelerator="cpu",
+        )
     trainer.fit(model, ReCaptchaData)

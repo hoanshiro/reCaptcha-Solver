@@ -37,27 +37,23 @@ class ReCaptchaModel(pl.LightningModule):
         )
         return optimizer
 
-    def training_step(self, batch, batch_idx):
+    def exec(self, batch, type="val"):
         x, y = batch
         logits = self.model(x)
         loss = F.cross_entropy(logits, y)
-        self.log("train_loss", loss)
+        self.log(f"{type}_loss", loss, prog_bar=True)
+        self.log(f"{type}_acc", self.accuracy(logits, y), prog_bar=True)
+        self.log(f"{type}_f1", self.f1(logits, y), prog_bar=True)
         return loss
 
-    def validate(self, batch, type="val"):
-        x, y = batch
-        logits = self.model(x)
-        loss = F.cross_entropy(logits, y)
-        self.log(f"{type}_loss", loss)
-        self.log(f"{type}_acc", self.accuracy(logits, y))
-        self.log(f"{type}_f1", self.f1(logits, y))
-        return loss
+    def training_step(self, batch, batch_idx):
+        return self.exec(batch, "train")
 
     def validation_step(self, batch, batch_idx):
-        return self.validate(batch, "val")
+        return self.exec(batch, "val")
 
     def test_step(self, batch, batch_idx):
-        return self.validate(batch, "test")
+        return self.exec(batch, "test")
 
 
 if __name__ == "__main__":

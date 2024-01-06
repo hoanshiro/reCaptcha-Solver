@@ -1,3 +1,6 @@
+import os
+
+base_dir = os.path.dirname(os.path.abspath(__file__))
 CFG = {
     "model_name": "lcnet_050.ra2_in1k",
     "learning_rate": 1e-4,
@@ -7,7 +10,8 @@ CFG = {
     "num_workers": 4,
     "epochs": 10,
     "device": "cpu",
-    "data_dir": "/Users/nguyenvanhoan/Computer_Vision/recaptcha_dataset/ds/",
+    "dataset_path": f"{base_dir}",
+    "data_dir": f"{base_dir}/google-recaptcha-image/ds/",
     "labels": [
         "bicycle",
         "bridge",
@@ -23,3 +27,4 @@ CFG = {
         "tlight",
     ],
 }
+print(CFG)
